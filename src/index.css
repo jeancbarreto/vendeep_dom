@@ -2,13 +2,34 @@ body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+   background-image: url('https://firebasestorage.googleapis.com/v0/b/project-wpa-cj.appspot.com/o/image%2Ffondo.png?alt=media&token=e0586168-5b69-4cf5-ab13-da48cc44632b');
+    background-repeat: no-repeat;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+ /* .conteint-body{
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/project-wpa-cj.appspot.com/o/image%2Ffondo.png?alt=media&token=e0586168-5b69-4cf5-ab13-da48cc44632b');
+    background-repeat: no-repeat;
+    padding-left: 10%;
+    padding-right: 10%;
+  
+}*/
+/*Equipos de 600px*/
+@media only screen and (min-width: 768px) { 
+ .conteint-body {
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/project-wpa-cj.appspot.com/o/image%2Ffondo.png?alt=media&token=e0586168-5b69-4cf5-ab13-da48cc44632b');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 }

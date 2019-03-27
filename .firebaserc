@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "obs": "project-wpa-cj",
+    "default": "project-wpa-cj"
+  }
+}
