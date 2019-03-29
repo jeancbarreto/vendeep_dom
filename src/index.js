@@ -10,6 +10,7 @@ import singup from './Pages/SingUp';
 import question from "./Pages/QuestionView";
 import answer from "./Pages/AnswerView";
 import admin from "./Pages/AdminView";
+import formDynamic from "./Pages/viewForm"
 import { Menu } from '@material-ui/core';
 
 
@@ -22,6 +23,7 @@ const Root = () => {
           <Route exact path="/Questions" component={question} />
           <Route exact path="/Answers" component={answer} />
           <Route exact path="/AdminView" component={admin} />
+          <Route exact path="/Form" component={formDynamic} />
         </Switch>
       </Router>
     );
