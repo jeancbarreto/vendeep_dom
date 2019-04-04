@@ -12,6 +12,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Menu from "./componentes/Menu";
 import Fade from "@material-ui/core/Fade";
+import Cookies from "universal-cookie";
 import './App.css';
 import SingUp from '../src/Pages/SingUp';
 
@@ -116,10 +117,27 @@ class App extends Component {
     super(props);
 
     this.state = {
-      value: 0
+      value: 0,
+      isConneted:false,
+      isAdmin: false
     };
 
+    
   }
+
+  handleValidarUser = () => {
+    const cookies_ = new Cookies();
+    var user = cookies_.getAll("sad_as546_184sdad");
+    console.log(user);
+    if (user !== undefined && user !== null && user !== {} && user !== "" && user.length > 0) {
+      if(user.rol === 1){
+        this.setState({isAdmin : true})
+      }
+
+      this.setState({ isConneted: true });
+      console.log(this.state.isConneted)
+      }
+    }
 
   handleChangeIndex = index => {
     this.setState({ value: index });
@@ -131,16 +149,32 @@ class App extends Component {
     });
   };
 
+  handleValid = () =>{
+    if (this.state.isConneted === false){
+      if (this.state.isAdmin === false){
+        return <Login />;
+      }else{
+        this.props.history.push("/AdminView");
+      }
+    }else{
+      if (this.state.isAdmin){
+        this.props.history.push("/AdminView");
+      }else{
+        this.props.history.push("/Questions");
+      }
+      
+    }
+  }
+
   render() {
     const {classes} = this.props;
+    this.handleValidarUser();
     return (
-     
       <div className="App">
-        <div><Menu /></div>
         <Grid container className="conteint-body">
           <Grid item xs={12}>
             <TabContainer dir={classes.direction}>
-              <Login />
+             {this.handleValid()}
             </TabContainer>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import {BuildForm} from "../dataFake/jsonForm"
+import {BuildForm} from "../dataFake/csForm"
 import Axios from "axios";
 
 const styles = theme => ({
@@ -32,21 +32,19 @@ class viewForm extends Component {
                     "isRequired": true
                 },
                 "comboBox": {
-                    "ComboBox": {
-                        "name": "TipoPregunta",
-                        "id": "TipoPregunta",
-                        "label": "Escoja una opción valida",
-                        "options": [
-                            {
-                                "name": "FACTURA",
-                                "value": "F"
-                            },
-                            {
-                                "name": "BOLETA",
-                                "value": "B"
-                            }
-                        ]
-                    }
+                    "name": "TipoPregunta",
+                    "id": "TipoPregunta",
+                    "label": "Escoja una opción valida",
+                    "options": [
+                        {
+                            "name": "FACTURA",
+                            "value": "F"
+                        },
+                        {
+                            "name": "BOLETA",
+                            "value": "B"
+                        }
+                    ]
                 },
                 "textarea": {
                     "name": "contexto",
@@ -54,9 +52,10 @@ class viewForm extends Component {
                     "label": "Explique su pregunta"
                 },
                 "File": {
-                    "name": "File",
-                    "id": "File"
-                }
+                    "name": "file",
+                    "id": "File",
+                    "label":"Ingrese su archivo"
+                },
             }
         }
         

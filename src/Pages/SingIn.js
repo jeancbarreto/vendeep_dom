@@ -11,6 +11,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
+import Cookies from "universal-cookie";
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
@@ -60,7 +61,8 @@ class SignIn extends Component {
 
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            isConneted:false
         };
     }
 
@@ -70,14 +72,26 @@ class SignIn extends Component {
         });
     };
 
+    
+
     handleLoginUser = () =>{
-      console.log("Llego");
         axios.post("https://obs-dom.herokuapp.com/users/login", {
             username:this.state.username,
             password:this.state.password
         },config).then(result => {
             if(result.status === 200){
-                console.log(result.data);
+              if(result.data.user !== null){
+                const cookies_ = new Cookies();
+                cookies_.set("sad_as546_184sdad", result.data.user, { path: "/" });
+                if(result.data.user.rol === 0){
+                  window.location.replace("/Questions");
+                }else{
+                  window.location.replace("/AdminView");
+                }
+                
+              }else{
+                alert("Por favor ingrese credenciales validas")
+              }
             }
         }).catch(error => {
             console.log(error);
@@ -88,6 +102,10 @@ class SignIn extends Component {
         const {classes} = this.props;
         return (
           <main className={classes.main}>
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/project-wpa-cj.appspot.com/o/image%2FAPP_DOM3.png?alt=media&token=7583f9b6-52fe-4a00-a8cf-db8d80168716"
+              style={{ width: "100%" }}
+            />
             <CssBaseline />
             <Paper className={classes.paper}>
               <Avatar className={classes.avatar}>
@@ -96,7 +114,11 @@ class SignIn extends Component {
               <Typography component="h1" variant="h5">
                 Iniciar Sesión
               </Typography>
-              <form className={classes.form} noValidate autoComplete="off" >
+              <form
+                className={classes.form}
+                noValidate
+                autoComplete="off"
+              >
                 <FormControl margin="normal" required fullWidth>
                   <InputLabel htmlFor="username">Username</InputLabel>
                   <Input
@@ -125,14 +147,13 @@ class SignIn extends Component {
                   }
                   label="Remember me"
                 />
-                <a href="/SingUp" >Registrarse</a>
+                <a href="/SingUp">Registrarse</a>
                 <Button
-                  
                   fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                 onClick={e => this.handleLoginUser()}
+                  onClick={e => this.handleLoginUser()}
                 >
                   Iniciar Sesión
                 </Button>

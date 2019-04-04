@@ -16,6 +16,27 @@ code {
     monospace;
 }
 
+.textboxNew{
+  cursor: pointer;
+}
+
+.comboboxNew{
+  width: 100px;
+  cursor: pointer;
+}
+
+.componentToEdit{
+  margin-bottom: 1.2px;
+}
+
+.componentToEdit:hover{
+    border: #00000057;
+    border-style: dashed;
+}
+
+.btnEditControl {
+  float: right;
+}
  /* .conteint-body{
     background-image: url('https://firebasestorage.googleapis.com/v0/b/project-wpa-cj.appspot.com/o/image%2Ffondo.png?alt=media&token=e0586168-5b69-4cf5-ab13-da48cc44632b');
     background-repeat: no-repeat;

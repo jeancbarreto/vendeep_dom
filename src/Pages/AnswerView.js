@@ -4,23 +4,21 @@ import { withStyles } from "@material-ui/core/styles";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import TextField from "@material-ui/core/TextField";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Axios from "axios";
+import cookies from "universal-cookie";
+import firebase from 'firebase';
+import Cookies from "universal-cookie";
+import Menu from "../componentes/Menu";
+import axios from "axios";
 
 
 const styles = theme => ({
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
             width: 400,
             marginLeft: 'auto',
@@ -28,11 +26,11 @@ const styles = theme => ({
         },
     },
     paper: {
-        //marginTop: theme.spacing.unit * 8,
+        marginTop: theme.spacing.unit * 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        //padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
     },
     avatar: {
         marginLeft: theme.spacing.unit,
@@ -45,6 +43,12 @@ const styles = theme => ({
     submit: {
         marginTop: theme.spacing.unit * 3,
     },
+    textField: {
+        width: '100%'
+    },
+    buttonUpload: {
+        width: '100%'
+    }
 });
 
 const config = {
@@ -59,120 +63,136 @@ class AnswerView extends Component {
         super(props);
 
         this.state = {
-            username: "",
-            password: "",
-            rut: "",
-            direccion: "",
-            region_id: 1,
-            comuna_id: 1,
-            email: "",
-            status: 1,
-            rol: 1
+            id: 0,
+            question: "",
+            context: "",
+            file: ""
         };
     }
 
-    handleClicRegister = () => {
-        Axios.post("https://obs-dom.herokuapp.com/users", {
-            name: this.state.name,
-            rut: this.state.rut,
-            direction: this.state.direccion,
-            region_id: this.state.region_id,
-            comuna_id: this.state.comuna_id,
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email,
-            status: this.state.status,
-            rol: this.state.rol
-        }, config).then(result => {
-            if (result.status === 200) {
-                console.log(result.data);
-            }
-        }).catch(error => {
-            console.log(error);
-        })
+    handleValidarUser = () => {
+        const cookies_ = new Cookies();
+        var user = cookies_.getAll("sad_as546_184sdad");
+        console.log(user);
+        if (user !== {}) {
+            this.setState({ isConneted: true });
+            console.log(this.state.isConneted)
+        }
     }
 
+    handleChangeImageUploadProduct = e => {
+        var fileName = e.target.files[0].name;
+        var file = e.target.files[0];
+
+        const storageBef = firebase
+            .storage()
+            .ref("/image//")
+            .child(fileName);
+        storageBef.put(file);
+        storageBef.getDownloadURL().then(url => {
+            this.setState({ file: url });
+        });
+
+        console.log(this.state.file);
+    };
+
+    handleChangeForm = name => event => {
+        this.setState({
+            [name]: event.target.value
+        });
+    };
+
+    handleCreateProducts = () => {
+        const cookies_ = new Cookies();
+        const userid = cookies_.get("sad_as546_184sdad");
+        axios
+            .post(
+                "https://obs-dom.herokuapp.com/users/question",
+                {
+                    id: userid.id,
+                    question: this.state.question,
+                    context: this.state.context,
+                    file: this.state.file
+                },
+                config
+            )
+            .then(result => {
+                if (result.status === 200) {
+                    alert("Pregunta Creada");
+                    this.setState({
+                        id: 0,
+                        question: "",
+                        context: "",
+                        file: ""
+                    });
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+    handlerControlPay = (e) => {
+        console.log(e);
+    }
     render() {
-        const { classes } = this.props
+        const { classes } = this.props;
         return (
             <main className={classes.main}>
+                <div>
+                    <Menu type="Atras" title="Crear Pregunta" />
+                </div>
                 <CssBaseline />
                 <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h1" variant="h5">
-                        Registrarse
-              </Typography>
-                    <form className={classes.form}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="name">
-                                Nombre Completo
-                  </InputLabel>
-                            <Input
-                                id="name"
-                                name="name"
-                                autoComplete="name"
-                                autoFocus
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="rut">RUT</InputLabel>
-                            <Input
-                                id="rut"
-                                name="rut"
-                                autoComplete="rut"
-                                autoFocus
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input
-                                id="username"
-                                name="username"
-                                autoComplete="username"
-                                autoFocus
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Email</InputLabel>
-                            <Input
-                                id="email"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="direccion">Direccion</InputLabel>
-                            <Input
-                                id="direccion"
-                                name="direccion"
-                                autoComplete="direccion"
-                                autoFocus
-                            />
-                        </FormControl>
-
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input
-                                name="password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </FormControl>
-
+                        Crear Pregunta
+          </Typography>
+                    <form className={classes.container} noValidate autoComplete="off">
+                        <TextField
+                            id="outlined-name"
+                            label="Pregunta"
+                            className={classes.textField}
+                            value={this.state.question}
+                            onChange={this.handleChangeForm("question")}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="outlined-name"
+                            label="Contexto"
+                            className={classes.textField}
+                            value={this.state.context}
+                            onChange={this.handleChangeForm("context")}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <input
+                            accept="image/*"
+                            className={classes.input}
+                            style={{ display: "none" }}
+                            id="raised-button-file-two"
+                            onChange={e => this.handleChangeImageUploadProduct(e)}
+                            multiple
+                            type="file"
+                        />
+                        <label htmlFor="raised-button-file-two">
+                            <Button
+                                variant="raised"
+                                component="span"
+                                className={classes.buttonUpload}
+                            >
+                                Subir Archivo
+                        </Button>
+                        </label>
                         <Button
-                            fullWidth
                             variant="contained"
                             color="primary"
-                            className={classes.submit}
-                            onClick={e => this.handleClicRegister()}
+                            className={classes.buttonUpload}
+                            onClick={e => this.handleCreateProducts(e)}
                         >
-                            Registrarse
-                </Button>
+                            Enviar Pregunta
+                        </Button>
                     </form>
+
                 </Paper>
             </main>
         );

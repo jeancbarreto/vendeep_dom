@@ -59,6 +59,7 @@ class SignUp extends Component {
         super(props);
 
         this.state = {
+            name:"",
             username: "",
             password: "",
             rut:"",
@@ -67,17 +68,24 @@ class SignUp extends Component {
             comuna_id:1,
             email:"",
             status:1,
-            rol:1
+            rol:0
         };
     }
 
+handleChangeForm = name => event => {
+        this.setState({
+            [name]: event.target.value
+        });
+    };
+
     handleClicRegister = () =>{
+      console.log(this.state);
       Axios.post("https://obs-dom.herokuapp.com/users",{
         name:this.state.name,
         rut:this.state.rut,
         direction:this.state.direccion,
         region_id:this.state.region_id,
-        comuna_id:this.state.comuna_id,
+        commune_id:this.state.comuna_id,
         username:this.state.username,
         password:this.state.password,
         email:this.state.email,
@@ -85,7 +93,8 @@ class SignUp extends Component {
         rol:this.state.rol
       }, config).then(result => {
         if(result.status === 200){
-          console.log(result.data);
+          alert("Usuario Creado");
+          this.props.history.push("/");
         }
       }).catch(error => {
         console.log(error);
@@ -114,6 +123,8 @@ class SignUp extends Component {
                     name="name"
                     autoComplete="name"
                     autoFocus
+                    onChange={this.handleChangeForm("name")}
+                    value={this.state.name}
                   />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
@@ -123,6 +134,8 @@ class SignUp extends Component {
                     name="rut"
                     autoComplete="rut"
                     autoFocus
+                    onChange={this.handleChangeForm("rut")}
+                    value={this.state.rut}
                   />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
@@ -132,6 +145,8 @@ class SignUp extends Component {
                     name="username"
                     autoComplete="username"
                     autoFocus
+                    onChange={this.handleChangeForm("username")}
+                    value={this.state.username}
                   />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
@@ -141,6 +156,8 @@ class SignUp extends Component {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    onChange={this.handleChangeForm("email")}
+                    value={this.state.email}
                   />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
@@ -150,6 +167,8 @@ class SignUp extends Component {
                     name="direccion"
                     autoComplete="direccion"
                     autoFocus
+                    onChange={this.handleChangeForm("direccion")}
+                    value={this.state.direccion}
                   />
                 </FormControl>
 
@@ -160,6 +179,8 @@ class SignUp extends Component {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    onChange={this.handleChangeForm("password")}
+                    value={this.state.password}
                   />
                 </FormControl>
 
