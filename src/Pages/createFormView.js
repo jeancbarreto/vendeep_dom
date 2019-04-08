@@ -32,6 +32,12 @@ const styles = theme => ({
         padding: theme.spacing.unit * 4,
         outline: 'none',
     },
+    Div_Select:{
+      height: 95,
+      width: '100%',
+      border: 'double',
+      background: '#dfdfdf',
+    }
 });
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -60,7 +66,10 @@ class CreateviewForm extends Component {
       componentSeleted: "",
       open: false,
       valorLabel:"",
-      OptionSelect:[]
+      valorOption:"",
+      textOption:"",
+      OptionSelect:[],
+      validForm:""
     };
   }
 
@@ -72,55 +81,245 @@ class CreateviewForm extends Component {
     this.setState({ open: false });
   };
   handleElementChange_ = e => {
-    if (e.target.tagName === "BUTTON") {
+    if (
+      e.target.tagName === "BUTTON" &&
+      e.target.id !== "btnDeletecontrol"
+    ) {
       this.setState({ componentSeleted: e.target.parentNode.id });
       this.setState({ open: true });
+    }else{
+      //console.log(this.state.componentSeleted);
+      document.getElementById(e.target.parentNode.id).remove();
+      this.setState({ htmlNew: document.getElementById("form_elements_new").firstChild.innerHTML })
+      //this.state.htmlNew.children(e.target.parentNode.id).remove();
     }
   };
 
+  handleChangeForm = name => event => {
+    this.setState({
+      [name]: event.target.value
+    });
+  };
+//
+  AddOptionForSelectControl = (event) =>{
+    if(this.state.textOption === "" || this.state.valorOption === ""){
+      alert("Ingresar el valor o texto de la opción agregar");
+    }else{
+      var valor = [
+       this.state.textOption,
+       this.state.valorOption
+      ];
+      this.state.OptionSelect.push(valor);
+      this.setState({textOption : "", valorOption: ""});
+    }
+  }
+/// funcion que crea el formulario de edición del componente seleccionado
   CreateForm = e => {
     var componente = document.getElementById(
       "" + this.state.componentSeleted + ""
     );
     var elemento = "";
     if (componente !== "") {
-      elemento = componente.childNodes[2].type;
+      if (componente.childNodes.length > 2){
+        elemento = componente.childNodes[3].type;
+      } else{
+        elemento = "h5"
+      }
+      console.log(elemento);
     }
 
-    if (elemento === "text") {
     const { classes } = this.props;
-      return (
-        <form>
-        <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="labelNew">
-                Nombre Completo
-             </InputLabel>
-            <Input
-                id="labelNew"
-                name="labelNew"
+    switch(elemento)
+    {
+      case "text":
+        return (
+          <form>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="valorLabel">Nombre Completo</InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
                 autoComplete="name"
                 autoFocus
-            />
-        </FormControl>
-        <FormControlLabel
-            control={
+                value={this.state.valorLabel}
+                onChange={this.handleChangeForm("valorLabel")}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={
                 <Checkbox
-                    checked={this.state.open}
-                    value="checkedB"
-                    color="primary"
+                  checked={this.state.open}
+                  value="checkedB"
+                  color="primary"
                 />
-            }
-            label="Es Requerido"
-        />
-        <Button onClick={e => this.onSaveForm(this.state.componentSeleted, this, e)}>Guardar</Button>
-        </form>
-      );
+              }
+              label="Es Requerido"
+            />
+            <Button
+              onClick={e =>
+                this.onSaveForm(this.state.componentSeleted, this, e)
+              }
+            >
+              Guardar
+          </Button>
+          </form>
+        );
+      break;
+      case "textarea":
+        return (
+          <form>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="valorLabel">
+                Nombre Completo
+              </InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
+                autoComplete="name"
+                autoFocus
+                value={this.state.valorLabel}
+                onChange={this.handleChangeForm("valorLabel")}
+              />
+            </FormControl>
+           
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.open}
+                  value="checkedB"
+                  color="primary"
+                />
+              }
+              label="Es Requerido"
+            />
+            <Button
+              onClick={e =>
+                this.onSaveForm(this.state.componentSeleted, this, e)
+              }
+            >
+              Guardar
+            </Button>
+          </form>
+        );
+      break;
+      case "h5":
+        return (
+          <form>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="valorLabel">
+                Titulo
+              </InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
+                autoComplete="name"
+                autoFocus
+                value={this.state.valorLabel}
+                onChange={this.handleChangeForm("valorLabel")}
+              />
+            </FormControl>
+            <Button
+              onClick={e =>
+                this.onSaveForm(this.state.componentSeleted, this, e)
+              }
+            >
+              Guardar
+            </Button>
+          </form>
+        );
+      break;
+      case "select-one":
+        return (
+          <form>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="valorLabel">
+                Nombre Completo
+              </InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
+                autoComplete="name"
+                autoFocus
+                value={this.state.valorLabel}
+                onChange={this.handleChangeForm("valorLabel")}
+              />
+            </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="valorLabel">Texto opción</InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
+                autoComplete="name"
+                autoFocus
+                value={this.state.textOption}
+                onChange={this.handleChangeForm("textOption")}
+              />
+            </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="valorLabel">valor opción</InputLabel>
+              <Input
+                id="valorLabel"
+                name="valorLabel"
+                autoComplete="name"
+                autoFocus
+                value={this.state.valorOption}
+                onChange={this.handleChangeForm("valorOption")}
+              />
+            </FormControl>
+            <Button onClick={e => this.AddOptionForSelectControl(e)}>
+              Add+
+            </Button>
+            <div id="opcion_select" className={classes.Div_Select}>{this.state.OptionSelect}</div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.open}
+                  value="checkedB"
+                  color="primary"
+                />
+              }
+              label="Es Requerido"
+            />
+            <Button
+              onClick={e =>
+                this.onSaveForm(this.state.componentSeleted, this, e)
+              }
+            >
+              Guardar
+            </Button>
+          </form>
+        );
+      break;
     }
-  };
 
+   
+    
+  };
+///Funcion que guarda el formulario y lo setea
   onSaveForm = (id, newform, e) =>{
-      console.log("id de componete modificado", id);
-      console.log("Formulario nuevo", newform);
+    var html_ = document.getElementById(id);
+    var hijos = html_.childNodes;
+
+    for(var i in hijos){
+      switch (hijos[i].tagName){
+        case "LABEL":
+         hijos[i].innerText = this.state.valorLabel;
+        break;
+        case "SELECT":
+          if(this.state.OptionSelect.length > 0){
+            this.state.OptionSelect.map(elemento => {
+              var option = document.createElement("option");
+              option.text = elemento[0];
+              option.value = elemento[1];
+              hijos[i].add(option);
+            })
+          }
+        break;
+        case "H5":
+          hijos[i].innerText = this.state.valorLabel;
+        break;
+      }
+    }
   }
 
   onDrop(data) {
@@ -144,7 +343,7 @@ class CreateviewForm extends Component {
         <br />
         <main>
           <div className={classes}>
-            <Droppable onDrop={this.onDrop.bind(this)} types={["formelements"]}>
+            <Droppable onDrop={this.onDrop.bind(this)} types={["formelements"]} id="form_elements_new">
               <Paper className={classes.root} elevation={1}>
                 <div
                   dangerouslySetInnerHTML={{ __html: this.state.htmlNew }}
@@ -153,6 +352,10 @@ class CreateviewForm extends Component {
               </Paper>
             </Droppable>
           </div>
+          <Button color="primary" centerRipple
+            variant="contained">
+              Guardar Formularío
+          </Button>
         </main>
         <Modal
           aria-labelledby="simple-modal-title"

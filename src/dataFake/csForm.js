@@ -42,10 +42,12 @@ export const CreateHtmlFormNew = (data, html_, quantity) =>{
     var label = "<label class='textboxNew' id='label_" + quantity +"'>Configure el Texto</label>";
     var div = "<div class='componentToEdit' id='div_" + quantity + "'  class='textboxNew'>";
     var btnEditar ="<Button class='btnEditControl' >Editar</Button>";
+    var btnDelete = "<Button class='btnEditControl' id='btnDeletecontrol' >Eliminar</Button>";
     switch (data.formelements) {
         case "Textbox":
             html += div
             html += btnEditar;
+            html += btnDelete;
             html += label;
             
             html +="<input type='Text' id='input_"+quantity+"' class='textboxNew' />";
@@ -54,6 +56,7 @@ export const CreateHtmlFormNew = (data, html_, quantity) =>{
         case "Combobox":
             html += div;
             html += btnEditar;
+            html += btnDelete;
             html += label;
             html += "<select class='comboboxNew' id='select_" + quantity +"'></select>";
             html += "</div>";
@@ -61,6 +64,7 @@ export const CreateHtmlFormNew = (data, html_, quantity) =>{
         case "Textarea":
             html += div;
             html += btnEditar;
+            html += btnDelete;
             html += label;
             html +=
               "<textarea rows='4' class='textboxNew' cols='50' id='textarea_" +
@@ -71,6 +75,7 @@ export const CreateHtmlFormNew = (data, html_, quantity) =>{
         case "File":
             html += div;
             html += btnEditar;
+            html += btnDelete;
             html += label;
             html += "<input accept = 'image' type='file' id='file_" + quantity +"'/>";
             html +="<label htmlFor = 'file_" + quantity + "'> <Button variant='raised' component='span'>Subir archivo</Button></label>";
@@ -78,6 +83,7 @@ export const CreateHtmlFormNew = (data, html_, quantity) =>{
         case "Titulo":
             html += div;
             html += btnEditar;
+            html += btnDelete;
             html +=
               "<h5 class='textboxNew' id='titulo_" +
               quantity +

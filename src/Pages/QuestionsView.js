@@ -14,21 +14,21 @@ import axios from 'axios';
 import { TableFooter, Typography, Button } from "@material-ui/core";
 
 const styles = theme => ({
-  root: {
-    width: "100%",
-    marginTop: 30 * 3,
-    marginBoton:50,
-    overflowX: "auto",
-    height: 320,
-  },
-  table: {
-    minWidth: 700
-  },
-  fab: {
-    margin: theme.spacing.unit,
-    float: "right",
-    marginTop:30 *2
-  },
+    root: {
+        width: "100%",
+        marginTop: 30 * 3,
+        marginBoton: 50,
+        overflowX: "auto",
+        height: 320,
+    },
+    table: {
+        minWidth: 700
+    },
+    fab: {
+        margin: theme.spacing.unit,
+        float: "right",
+        marginTop: 30 * 2
+    },
 });
 
 let id = 0;
@@ -38,106 +38,119 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
+    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+    createData("Eclair", 262, 16.0, 24, 6.0),
+    createData("Cupcake", 305, 3.7, 67, 4.3),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData("Gingerbread", 356, 16.0, 49, 3.9)
 ];
 
 const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json"
-  }
+    headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+    }
 };
 
-class QuestionsView extends React.Component {
+class QuestionView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            questions:[]
+            questions: []
         };
+        this.handleGetQuestions();
+
     }
 
     handleGetQuestions = () => {
-        axios.get("https://obs-dom.herokuapp.com/user/2/question", config).then(result => {
-            if(result.status === 200){
-                this.setState({questions : result.data.response});
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+        axios
+            .get("https://obs-dom.herokuapp.com/questions", config)
+            .then(result => {
+                if (result.status === 200) {
+                    this.setState({ questions: result.data.open });
+                    console.log(this.state.questions);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 
-render() {
-    const { classes } = this.props;
-    return (
-      <div>
-        <div>
-          <Menu type="Atras" title="Preguntas" />
-        </div>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="right">Fecha</TableCell>
-                <TableCell align="right">Estado</TableCell>
-                <TableCell align="right">Acción</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.state.questions(row => (
-                <TableRow key={row.id}>
-                  <TableCell>
-                    {row.id}
-                  </TableCell>
-                  <TableCell align="right">{row.created_at}</TableCell>
-                  <TableCell align="right">{row.status}</TableCell>
-                 <TableCell align="right"><Button href="/CreateQuestion/${row.id}">Ver</Button></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TableFooter>
+    render() {
 
-          </TableFooter>
-        </Paper>
-        <Fab color="primary" aria-label="Add" className={classes.fab} href="/CreateQuestion/0">
-            <AddIcon />
-        </Fab>
-      </div>
-      
-    );
+        const { classes } = this.props;
+        return (
+            <div>
+                <div>
+                    <Menu type="Atras" title="Preguntas Administrador" />
+                </div>
+                <Paper className={classes.root}>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Id</TableCell>
+                                <TableCell align="Center">Fecha</TableCell>
+                                <TableCell align="Center">Estado</TableCell>
+                                <TableCell align="Center">Acción</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.questions.map(row => (
+                                <TableRow key={row.id}>
+                                    <TableCell>{row.id}</TableCell>
+                                    <TableCell align="Center">
+                                        {row.created_at}
+                                    </TableCell>
+                                    <TableCell align="Center">{row.status}</TableCell>
+                                    <TableCell align="Center">
+                                        <Button href={row.id ? "/CreateQuestion/" + row.id + "" : ""} color="primary">
+                                            Ver
+                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <TableFooter />
+                </Paper>
+                <Fab
+                    color="primary"
+                    aria-label="Add"
+                    className={classes.fab}
+                    href="/CreateQuestion/0"
+                >
+                    <AddIcon />
+                </Fab>
+            </div>
+        );
     }
 }
 
-QuestionsView.propTypes = {
+QuestionView.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(QuestionsView);
+export default withStyles(styles)(QuestionView);

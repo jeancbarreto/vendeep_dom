@@ -114,7 +114,7 @@ class AdminView extends React.Component {
                     <TableCell>Id</TableCell>
                     <TableCell align="Center">Fecha</TableCell>
                     <TableCell align="Center">Estado</TableCell>
-                                <TableCell align="Center">Acción</TableCell>
+                    <TableCell align="Center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

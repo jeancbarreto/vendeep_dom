@@ -12,7 +12,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Menu from "./componentes/Menu";
 import Fade from "@material-ui/core/Fade";
+import Modal from "@material-ui/core/Modal";
 import Cookies from "universal-cookie";
+import Fab from "@material-ui/core/Fab";
 import './App.css';
 import SingUp from '../src/Pages/SingUp';
 
@@ -79,7 +81,17 @@ const styles = theme => ({
     alignItems: "center",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`
+      
   },
+  paper_: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+    outline: 'none',
+    fontSize:10
+    },
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
@@ -109,8 +121,25 @@ const styles = theme => ({
   hideContain:{
     display:'none'
   },
+  fab: {
+    margin: theme.spacing.unit,
+    float: "right",
+    width:30,
+    height:30
+  },
 });
 
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 class App extends Component {
   constructor(props) {
@@ -118,19 +147,28 @@ class App extends Component {
 
     this.state = {
       value: 0,
-      isConneted:false,
-      isAdmin: false
+      isConneted: false,
+      isAdmin: false,
+      open: false
     };
 
     
   }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
   handleValidarUser = () => {
     const cookies_ = new Cookies();
     var user = cookies_.getAll("sad_as546_184sdad");
     console.log(user);
     if (user !== undefined && user !== null && user !== {} && user !== "" && user.length > 0) {
-      if(user.rol === 1){
+      if(user.rol === "admin"){
         this.setState({isAdmin : true})
       }
 
@@ -173,11 +211,52 @@ class App extends Component {
       <div className="App">
         <Grid container className="conteint-body">
           <Grid item xs={12}>
+            <Fab
+              color="primary"
+              aria-label="Add"
+              className={classes.fab}
+              onClick={e => this.handleOpen(e)}
+            >
+              <b>?</b>
+            </Fab>
             <TabContainer dir={classes.direction}>
-             {this.handleValid()}
+              {this.handleValid()}
             </TabContainer>
           </Grid>
         </Grid>
+
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div style={getModalStyle()} className={classes.paper_}>
+            <b><h5>¿QUE HACER?</h5></b>
+            <h5>DESCRIPCIÓN</h5>
+            <p >
+              Lea las instrucciones.<br />
+              Regístrese.<br />
+              Expone tu caso y haz tu pregunta.<br />
+            </p>
+
+            <p>
+              El sistema funciona de la siguiente forma:<br />
+            </p>
+            <p >El desarrollo de proyectos de edificación, permisos y regularizaciones se realiza a través del ingreso de expedientes que, por lo general son devueltos con un "Acta de Observaciones" el cual debe ser subsanado en un tiempo limitado.<br />
+              Sin embargo, esta aplicación permite a los interesados realizar las preguntas necesarias previo al ingreso municipal.
+              Su mensaje sera respondido en un lapso de 72h hábiles.
+           </p>
+
+            <p>
+              <b>Las ventajas son:</b><br />
+              - Rápidez de atención para cada consulta.<br />
+              - Profesionalismo y eficiencia.<br />
+              - Apoyo de carácter municipal.<br />
+            </p>
+        
+          </div>
+        </Modal>
       </div>
     );
   }
